@@ -48,22 +48,31 @@ function jsonData(sender, receiver, quantity){
 
 function isValidChain(blockchain){
     let prev_hash = 0;
+    let violation_flag = false;
     blockchain.forEach(block => {
         if (block.index > 0){
-            if (block.hash != prev_hash){
-                return false;
+            if (prev_hash !== block.precedingHash){
+                console.error(`VIOLATED @ BLOCK ${block.index}`)
+                violation_flag = true;
             }
-            prev_hash = block.hash;
         }
+        prev_hash = block.hash;
         });
-        return true;
+    return !(violation_flag);
 }
 
+function manipChain(arg_blockchain){
+    let blockchain = arg_blockchain["blockchain"];
+    let to_manip = Math.floor(Math.random() * blockchain.length);
+    blockchain[to_manip].hash = "xyz";
+    console.error("Modified blockchain");
+}
 
 module.exports = {
     cryptBlock: cryptBlock,
     cryptBlockchain: cryptBlockchain,
     jsonData: jsonData,
-    isValidChain: isValidChain
+    isValidChain: isValidChain,
+    manipChain: manipChain
 }
 
