@@ -33,6 +33,7 @@ class cryptBlockchain{
         newBlock.hash = newBlock.computeHash();        
         this.blockchain.push(newBlock);
     }
+
 }
 
 function jsonData(sender, receiver, quantity){
@@ -45,9 +46,24 @@ function jsonData(sender, receiver, quantity){
     return JSON.stringify(toReturnJSON);
 }
 
+function isValidChain(blockchain){
+    let prev_hash = 0;
+    blockchain.forEach(block => {
+        if (block.index > 0){
+            if (block.hash != prev_hash){
+                return false;
+            }
+            prev_hash = block.hash;
+        }
+        });
+        return true;
+}
+
+
 module.exports = {
     cryptBlock: cryptBlock,
     cryptBlockchain: cryptBlockchain,
-    jsonData: jsonData
+    jsonData: jsonData,
+    isValidChain: isValidChain
 }
 

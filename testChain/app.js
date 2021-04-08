@@ -3,6 +3,7 @@ const crypto = require('./crypto');
 let cryptBlock = crypto.cryptBlock;
 let cryptBlockchain = crypto.cryptBlockchain;
 let jsonData = crypto.jsonData;
+let isValidChain = crypto.isValidChain;
 
 function dummyOperations(verbose = false){
     var dummyBlockchain = new cryptBlockchain();
@@ -12,7 +13,10 @@ function dummyOperations(verbose = false){
     if (verbose){
         console.log(JSON.stringify(dummyBlockchain, null, 6));
     }
-    console.table(dummyBlockchain["blockchain"])
-}
+    console.table(dummyBlockchain["blockchain"]);
+    if (dummyBlockchain["blockchain"] instanceof Array){
+        console.assert(isValidChain(dummyBlockchain["blockchain"]), "Invalid chain");
+    }
+} 
 
-dummyOperations(true);
+dummyOperations(false);
